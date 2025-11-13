@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mô phỏng TiVi và Remote</title>
+</head>
+<body>
+<script>
+    class TiVi {
+        constructor() {
+            this.channel = 1;
+            this.volume = 10;
+            this.status = false;
+        }
+
+        batTiVi() {
+            this.status = true;
+            console.log("TiVi đã bật.");
+        }
+
+        tatTiVi() {
+            this.status = false;
+            console.log("TiVi đã tắt.");
+        }
+
+        doiKenh(channel) {
+            if (this.status) {
+                this.channel = channel;
+                console.log(`Đã chuyển sang kênh ${channel}.`);
+            } else {
+                console.log("TiVi đang tắt, không thể đổi kênh.");
+            }
+        }
+
+        tangAmLuong() {
+            if (this.status) {
+                this.volume++;
+                console.log(`Âm lượng hiện tại: ${this.volume}`);
+            } else {
+                console.log("TiVi đang tắt, không thể tăng âm lượng.");
+            }
+        }
+
+        giamAmLuong() {
+            if (this.status) {
+                this.volume--;
+                console.log(`Âm lượng hiện tại: ${this.volume}`);
+            } else {
+                console.log("TiVi đang tắt, không thể giảm âm lượng.");
+            }
+        }
+    }
+
+    class Remote {
+        constructor(code) {
+            this.code = code;
+        }
+
+        doiKenh(tv, channel) {
+            console.log(`Remote đổi sang kênh ${channel}`);
+            tv.doiKenh(channel);
+        }
+
+        tangAm(tv) {
+            console.log("Remote tăng âm lượng");
+            tv.tangAmLuong();
+        }
+
+        giamAm(tv) {
+            console.log("Remote giảm âm lượng");
+            tv.giamAmLuong();
+        }
+
+        bat(tv) {
+            console.log("Remote bật TiVi");
+            tv.batTiVi();
+        }
+
+        tat(tv) {
+            console.log("Remote tắt TiVi");
+            tv.tatTiVi();
+        }
+    }
+
+    let tv = new TiVi();
+    let remote = new Remote("RM01");
+
+    console.log("BẮT ĐẦU MÔ PHỎNG");
+
+    tv.batTiVi();
+    tv.doiKenh(7);
+    remote.doiKenh(tv, 3);
+    tv.tangAmLuong();
+    tv.tangAmLuong();
+    remote.tat(tv);
+
+    console.log("KẾT THÚC MÔ PHỎNG");
+</script>
+</body>
+</html>

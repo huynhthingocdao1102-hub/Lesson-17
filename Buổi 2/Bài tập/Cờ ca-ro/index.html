@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cờ Caro đơn giản</title>
+    <style>
+        body {
+            text-align: center;
+        }
+
+        #board {
+            position: relative;
+            width: 400px;
+            height: 400px;
+            margin: 10px auto;
+            border: 2px solid black;
+        }
+
+        .cell {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border: 1px solid #aaa;
+            text-align: center;
+            line-height: 20px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Cờ Caro 20x20</h2>
+<div id="board"></div>
+<p id="msg"></p>
+
+<script>
+    const size = 20;
+    const board = document.getElementById("board");
+    const msg = document.getElementById("msg");
+    let current = "X";
+    let over = false;
+
+    let cells = [];
+    for (let i = 0; i < size; i++) {
+        cells[i] = [];
+        for (let j = 0; j < size; j++) {
+            cells[i][j] = "";
+        }
+    }
+
+    for (let i = 0; i < size; i++) {
+        for (let j = 0; j < size; j++) {
+            let div = document.createElement("div");
+            div.className = "cell";
+            div.style.left = j * 20 + "px";
+            div.style.top = i * 20 + "px";
+            div.onclick = function () {
+                play(i, j, div);
+            };
+            board.appendChild(div);
+        }
+    }
+
+    function play(row, col, cellDiv) {
+        if (over) return;
+        if (cells[row][col] !== "") return;
+
+        cells[row][col] = current;
+        cellDiv.innerText = current;
+
+        if (checkWin(row, col)) {
+            msg.innerText = "Người thắng: " + current;
+            over = true;
+            return;
+        }
+
+        current = current === "X" ? "O" : "X";
+    }
+
+    function checkWin(r, c) {
+        return (
+            count(r, c, 1, 0) + count(r, c, -1, 0) >= 4 ||
+            count(r, c, 0, 1) + count(r, c, 0, -1) >= 4 ||
+            count(r, c, 1, 1) + count(r, c, -1, -1) >= 4 ||
+            count(r, c, 1, -1) + count(r, c, -1, 1) >= 4
+        );
+    }
+
+    function count(r, c, dr, dc) {
+        let cnt = 0;
+        let i = r + dr, j = c + dc;
+        while (i >= 0 && i < size && j >= 0 && j < size && cells[i][j] === current) {
+            cnt++;
+            i += dr;
+            j += dc;
+        }
+        return cnt;
+    }
+</script>
+</body>
+</html>
